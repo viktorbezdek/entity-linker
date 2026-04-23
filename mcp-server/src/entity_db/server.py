@@ -59,7 +59,7 @@ def _register_resolver_tool() -> None:
     from entity_db.matching.resolver import ResolveOptions, resolve_link_text
     from entity_db.tools import get_conn
 
-    @mcp.tool  # type: ignore[misc]
+    @mcp.tool(name="resolve_link_text")  # type: ignore[misc]
     async def resolve_link_text_mcp(
         text: str,
         source_type: str = "markdown",

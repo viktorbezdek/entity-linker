@@ -10,7 +10,7 @@ interface Props {
 
 export function SpanCard({ item, onResolved }: Props): JSX.Element {
   const handlePick = (entityId: string) => {
-    postMcpAction("pending_resolve", { pending_id: item.id, entity_id: entityId });
+    postMcpAction("pending_resolve", { pending_id: item.id, entity_id_or_sentinel: entityId });
     onResolved(item.id);
   };
 

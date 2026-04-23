@@ -155,7 +155,7 @@ async def catalog_create(
         await asyncio.to_thread(
             lambda: (
                 conn.execute(
-                    "INSERT OR REPLACE INTO entities"
+                    "INSERT OR IGNORE INTO entities"
                     " (id, type, canonical_name, disambiguation_hint,"
                     "  attributes_json, created_at, updated_at)"
                     " VALUES (?, ?, ?, ?, ?, ?, ?)",

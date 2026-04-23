@@ -236,6 +236,21 @@ async def resolve_link_text(
             ev = json.dumps({"surface": surf, "source_hash": src_hash})
             await _upsert_staging(db, surf, ev, now)
             new_candidates.append({"surface": surf})
+            # Write unlinked (entity_id=NULL) resolution_log rows for each
+            # occurrence so staging_approve can backfill them on approval.
+            _sql_staged = (
+                "INSERT INTO resolution_log"
+                " (source_hash, source_type, span_start, span_end,"
+                "  surface, entity_id, confidence, method, created_at)"
+                " VALUES (?, ?, ?, ?, ?, NULL, 0.0, 'staged', ?)"
+            )
+            from entity_db.db import _write_lock
+            for m in re.finditer(re.escape(surf), text):
+                _args_staged = (src_hash, source_type, m.start(), m.end(), surf, now)
+                async with _write_lock:
+                    await asyncio.to_thread(
+                        lambda a=_args_staged: (db.execute(_sql_staged, a), db.commit())
+                    )
 
     return ResolveResult(
         resolutions=resolutions,

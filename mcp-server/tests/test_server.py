@@ -45,7 +45,7 @@ async def test_mcp_tool_registration_includes_core_tools(tmp_path: Path) -> None
 
     required = {
         "catalog_stats", "catalog_list", "catalog_search", "catalog_create",
-        "resolve_link_text_mcp", "resolve_render",
+        "resolve_link_text", "resolve_render",
         "staging_list", "staging_approve",
         "pending_list", "pending_resolve",
     }
