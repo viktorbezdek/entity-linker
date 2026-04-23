@@ -1,0 +1,24 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "viktor-entity-linker-marketplace",
+  "version": "0.1.0",
+  "description": "Private marketplace hosting the entity-linker Claude Code plugin",
+  "owner": {
+    "name": "Viktor Bezdek",
+    "email": "viktor.bezdek@groupon.com"
+  },
+  "plugins": [
+    {
+      "name": "entity-linker",
+      "description": "Resolves entity mentions in text inputs (transcripts, emails, docs) against a local catalog. Interactive disambiguation via MCP Apps with elicitation fallback. Czech + English, phonetic + fuzzy + inflection-aware matching.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Viktor Bezdek",
+        "email": "viktor.bezdek@groupon.com"
+      },
+      "source": ".",
+      "category": "productivity",
+      "keywords": ["text", "ner", "entity-linking", "transcripts", "email", "groupon", "b2c"]
+    }
+  ]
+}
