@@ -266,7 +266,7 @@ Type: Feature
 - [x] Task 4: Normalize module (Czech inflection)
 - [x] Task 5: Index module (phonetic + trigram + rebuild-on-mutation)
 - [x] Task 6: Candidate generation + scoring + type_fit rules
-- [ ] Task 7: Coref + `resolve_link_text` orchestrator
+- [x] Task 7: Coref + `resolve_link_text` orchestrator
 - [ ] Task 8: Catalog / staging / pending tools + YAML seed import
 - [ ] Task 9: Elicitation fallback + render module
 - [ ] Task 10: MCP Apps scaffold (Vite + shared postMessage lib)

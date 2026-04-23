@@ -1,0 +1,53 @@
+version: 1
+entities:
+  - id: viktor-bezdek
+    type: person
+    canonical_name: Viktor Bezdek
+    disambiguation_hint: "Groupon AI lead, Prague"
+    aliases:
+      - Viktor
+      - VB
+    attributes:
+      company: groupon
+      team: b2c-tribe
+
+  - id: tomas-novak
+    type: person
+    canonical_name: Tomáš Novák
+    disambiguation_hint: "B2C EM, Prague"
+    aliases:
+      - Tomas
+      - Tom
+      - Tomáš
+
+  - id: adam-korinek
+    type: person
+    canonical_name: Adam Kořínek
+    disambiguation_hint: "B2C EM"
+    aliases:
+      - Adam
+      - Korinek
+
+  - id: groupon
+    type: company
+    canonical_name: Groupon
+    disambiguation_hint: "Global e-commerce marketplace"
+    aliases:
+      - Groupon
+      - GRPN
+
+  - id: foundry-ai
+    type: project
+    canonical_name: Foundry AI
+    disambiguation_hint: "Internal ML platform, 2026"
+    aliases:
+      - FoundryAI
+      - Foundry
+
+  - id: b2c-tribe
+    type: team
+    canonical_name: B2C Tribe
+    disambiguation_hint: "Business-to-consumer engineering tribe"
+    aliases:
+      - B2C
+      - B2C Tribe
