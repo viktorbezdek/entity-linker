@@ -136,9 +136,9 @@ async def _upsert_staging(
     conn: sqlite3.Connection, surface: str, evidence_json: str, now: int
 ) -> None:
     from entity_db.db import _write_lock
-    from entity_db.matching.normalize import normalize_text
+    from entity_db.matching.normalize import compute_dedup_key
 
-    dedup_key = normalize_text(surface) + "|other"
+    dedup_key = compute_dedup_key(surface, "other")
     sql = (
         "INSERT INTO staging"
         " (id, dedup_key, surface, evidence_json, frequency, status, created_at, updated_at)"

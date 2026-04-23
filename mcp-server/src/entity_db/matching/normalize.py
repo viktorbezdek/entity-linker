@@ -85,3 +85,12 @@ def derive_alias_variants(canonical: str) -> list[str]:
             result.append(v)
 
     return result
+
+
+def compute_dedup_key(surface: str, proposed_type: str | None = None) -> str:
+    """Return the canonical staging dedup key: normalize(surface)|type.
+
+    Used by both resolver._upsert_staging and tools.staging.staging_stage to
+    ensure consistent UNIQUE constraint matching.
+    """
+    return normalize_text(surface) + "|" + (proposed_type or "other")

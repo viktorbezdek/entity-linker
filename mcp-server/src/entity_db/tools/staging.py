@@ -6,8 +6,8 @@ import json
 import time
 import uuid
 
-from entity_db.db import _write_lock, rebuild_fts_for, upsert_alias
-from entity_db.matching.normalize import normalize_text
+from entity_db.db import _write_lock, upsert_alias
+from entity_db.matching.normalize import compute_dedup_key, normalize_text
 from entity_db.tools import get_conn
 
 
@@ -24,7 +24,7 @@ async def staging_stage(
     """Add or update a new-entity candidate with evidence."""
     conn = get_conn()
     now = _now()
-    dedup_key = normalize_text(surface) + "|" + (proposed_type or "other")
+    dedup_key = compute_dedup_key(surface, proposed_type)
     ev_json = json.dumps(evidence or {})
 
     sql = (
@@ -91,14 +91,14 @@ async def staging_approve(
         await upsert_alias(conn, merge_into, surface, ak, "user-confirmed")
         target_id = merge_into
     else:
-        # Approve as new entity
-        target_id = ak or staging_id[:8]
+        # Approve as new entity — use the ID returned by catalog_create
         from entity_db.tools.catalog import catalog_create
-        await catalog_create(
+        created = await catalog_create(
             type=proposed_type or "other",
             canonical_name=proposed_name or surface,
+            aliases=[surface] if surface != (proposed_name or surface) else None,
         )
-        await rebuild_fts_for(conn, target_id)
+        target_id = str(created["id"])
 
     # Update staging row
     async with _write_lock:

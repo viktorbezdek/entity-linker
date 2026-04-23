@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from fastmcp import FastMCP
+from fastmcp import Context, FastMCP
 from fastmcp.apps import AppConfig
 
 _APPS_DIR = Path(__file__).resolve().parents[2] / "apps"
@@ -27,13 +27,13 @@ def register_resources(mcp: FastMCP) -> None:
 
     @mcp.tool(app=AppConfig(resource_uri="ui://entity-db/disambiguation.html"))  # type: ignore[call-arg]
     async def _resolve_disambiguate_app_mcp(
-        source_hash: str, ambiguity_ids: list[str] | None = None
+        ctx: Context,
+        source_hash: str,
+        ambiguity_ids: list[str] | None = None,
     ) -> list[dict[str, object]]:
         """Open the Disambiguation App (or elicitation fallback) for ambiguous spans."""
-        from fastmcp import Context
-
         return await resolve_disambiguate_app(
-            ctx=Context,  # type: ignore[arg-type]
+            ctx=ctx,
             source_hash=source_hash,
             ambiguity_ids=ambiguity_ids,
         )
@@ -44,7 +44,8 @@ def register_resources(mcp: FastMCP) -> None:
 
     @mcp.tool(app=AppConfig(resource_uri="ui://entity-db/staging.html"))  # type: ignore[call-arg]
     async def _staging_review_app_mcp(
+        ctx: Context,
         staging_ids: list[str] | None = None,
     ) -> list[dict[str, object]]:
         """Open the Staging Review App (or elicitation fallback) for pending candidates."""
-        return await staging_review_app(staging_ids=staging_ids)
+        return await staging_review_app(ctx=ctx, staging_ids=staging_ids)

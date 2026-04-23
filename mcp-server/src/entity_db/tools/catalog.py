@@ -144,23 +144,26 @@ async def catalog_create(
     disambiguation_hint: str | None = None,
 ) -> dict[str, object]:
     """Create a new entity directly (skips staging)."""
+    from entity_db.db import _write_lock
+
     conn = get_conn()
     now = _now()
     eid = _slug(canonical_name)
     attrs_json = json.dumps(attributes) if attributes else None
 
-    await asyncio.to_thread(
-        lambda: (
-            conn.execute(
-                "INSERT OR REPLACE INTO entities"
-                " (id, type, canonical_name, disambiguation_hint,"
-                "  attributes_json, created_at, updated_at)"
-                " VALUES (?, ?, ?, ?, ?, ?, ?)",
-                (eid, type, canonical_name, disambiguation_hint, attrs_json, now, now),
-            ),
-            conn.commit(),
+    async with _write_lock:
+        await asyncio.to_thread(
+            lambda: (
+                conn.execute(
+                    "INSERT OR REPLACE INTO entities"
+                    " (id, type, canonical_name, disambiguation_hint,"
+                    "  attributes_json, created_at, updated_at)"
+                    " VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    (eid, type, canonical_name, disambiguation_hint, attrs_json, now, now),
+                ),
+                conn.commit(),
+            )
         )
-    )
 
     all_aliases = list(aliases or []) + derive_alias_variants(canonical_name)
     for alias in set(all_aliases):

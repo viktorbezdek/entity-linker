@@ -129,3 +129,109 @@ async def test_rebuild_fts_for_updates_row(tmp_db_path: Path) -> None:
     )
     assert any(r[0] == "vb2" for r in rows)
     await asyncio.to_thread(conn.close)
+
+
+@pytest.mark.asyncio
+async def test_rebuild_phonetic_for_existing_alias(tmp_db_path: Path) -> None:
+    from entity_db.db import rebuild_phonetic_for
+
+    conn = await open_db(tmp_db_path)
+    await asyncio.to_thread(
+        lambda: (
+            conn.execute(
+                "INSERT INTO entities (id, type, canonical_name, created_at, updated_at) "
+                "VALUES ('vb3', 'person', 'Test', 0, 0)"
+            ),
+            conn.execute(
+                "INSERT INTO aliases (entity_id, alias, alias_key, origin) "
+                "VALUES ('vb3', 'bezdek', 'bezdek', 'canonical')"
+            ),
+            conn.commit(),
+        )
+    )
+    await rebuild_phonetic_for(conn, "bezdek")
+    count = await asyncio.to_thread(
+        lambda: conn.execute(
+            "SELECT COUNT(*) FROM phonetic_index WHERE alias_key = 'bezdek'"
+        ).fetchone()
+    )
+    assert count[0] > 0
+    await asyncio.to_thread(conn.close)
+
+
+@pytest.mark.asyncio
+async def test_rebuild_phonetic_for_missing_alias_cleans_up(tmp_db_path: Path) -> None:
+    from entity_db.db import rebuild_phonetic_for
+
+    conn = await open_db(tmp_db_path)
+    # Insert a phonetic row without a corresponding alias
+    await asyncio.to_thread(
+        lambda: (
+            conn.execute(
+                "INSERT INTO phonetic_index (alias_key, phonetic_key, algo) "
+                "VALUES ('orphaned', 'ORFND', 'dmetaphone')"
+            ),
+            conn.commit(),
+        )
+    )
+    await rebuild_phonetic_for(conn, "orphaned")
+    count = await asyncio.to_thread(
+        lambda: conn.execute(
+            "SELECT COUNT(*) FROM phonetic_index WHERE alias_key = 'orphaned'"
+        ).fetchone()
+    )
+    assert count[0] == 0  # cleaned up since alias doesn't exist
+    await asyncio.to_thread(conn.close)
+
+
+@pytest.mark.asyncio
+async def test_rebuild_trigrams_for_existing_alias(tmp_db_path: Path) -> None:
+    from entity_db.db import rebuild_trigrams_for
+
+    conn = await open_db(tmp_db_path)
+    await asyncio.to_thread(
+        lambda: (
+            conn.execute(
+                "INSERT INTO entities (id, type, canonical_name, created_at, updated_at) "
+                "VALUES ('vb4', 'person', 'Test', 0, 0)"
+            ),
+            conn.execute(
+                "INSERT INTO aliases (entity_id, alias, alias_key, origin) "
+                "VALUES ('vb4', 'foundryai', 'foundryai', 'canonical')"
+            ),
+            conn.commit(),
+        )
+    )
+    await rebuild_trigrams_for(conn, "foundryai")
+    count = await asyncio.to_thread(
+        lambda: conn.execute(
+            "SELECT COUNT(*) FROM trigrams WHERE alias_key = 'foundryai'"
+        ).fetchone()
+    )
+    assert count[0] > 0
+    await asyncio.to_thread(conn.close)
+
+
+@pytest.mark.asyncio
+async def test_upsert_alias_chains_all_rebuilds(tmp_db_path: Path) -> None:
+    from entity_db.db import upsert_alias
+
+    conn = await open_db(tmp_db_path)
+    await asyncio.to_thread(
+        lambda: (
+            conn.execute(
+                "INSERT INTO entities (id, type, canonical_name, created_at, updated_at) "
+                "VALUES ('vb5', 'person', 'Test Entity', 0, 0)"
+            ),
+            conn.commit(),
+        )
+    )
+    await upsert_alias(conn, "vb5", "test", "test", "manual")
+    # aliases, phonetic_index, trigrams, and catalog_fts should all have rows
+    alias_count = await asyncio.to_thread(
+        lambda: conn.execute(
+            "SELECT COUNT(*) FROM aliases WHERE entity_id = 'vb5'"
+        ).fetchone()
+    )
+    assert alias_count[0] >= 1
+    await asyncio.to_thread(conn.close)

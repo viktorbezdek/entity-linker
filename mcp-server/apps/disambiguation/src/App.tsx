@@ -8,10 +8,11 @@ export default function App(): JSX.Element {
   const [resolved, setResolved] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    postMcpReady();
+    // Register listener BEFORE posting ready — host may replay payload immediately
     const unsub = onMcpMessage<PendingItem[]>((data) => {
       if (Array.isArray(data)) setItems(data);
     });
+    postMcpReady();
     return unsub;
   }, []);
 
