@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"uv run pytest tests/test_server.py -v 2>&1\",\"timeout\":60000,\"description\":\"Run test_server.py — GREEN check\"}",
+  "error": "Exit code 1\nwarning: `VIRTUAL_ENV=/Users/vbezdek/.cache/uv/builds-v0/.tmpz3gxyM` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\n============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/vbezdek/Work/entitiy-memory-plugin/mcp-server/.venv/bin/python\ncachedir: .pytest_cache\nrootdir: /Users/vbezdek/Work/entitiy-memory-plugin...",
+  "timestamp": "2026-04-23T10:21:06.775Z",
+  "retry_count": 2
+}
