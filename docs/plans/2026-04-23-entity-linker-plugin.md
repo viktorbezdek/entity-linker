@@ -265,7 +265,7 @@ Type: Feature
 - [x] Task 3: DB layer (schema, FTS5, WAL, async write-lock)
 - [x] Task 4: Normalize module (Czech inflection)
 - [x] Task 5: Index module (phonetic + trigram + rebuild-on-mutation)
-- [ ] Task 6: Candidate generation + scoring + type_fit rules
+- [x] Task 6: Candidate generation + scoring + type_fit rules
 - [ ] Task 7: Coref + `resolve_link_text` orchestrator
 - [ ] Task 8: Catalog / staging / pending tools + YAML seed import
 - [ ] Task 9: Elicitation fallback + render module
