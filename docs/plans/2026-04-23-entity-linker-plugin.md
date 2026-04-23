@@ -2,7 +2,7 @@
 
 Created: 2026-04-23
 Author: vbezdek@groupon.com
-Status: PENDING
+Status: COMPLETE
 Approved: Yes
 Iterations: 0
 Worktree: No
@@ -274,10 +274,10 @@ Type: Feature
 - [x] Task 12: Staging Review App UI + tool wiring
 - [x] Task 13: Four skills (entity-linker, entity-matcher, input-preprocessing, entity-catalog-manage)
 - [x] Task 14: Subagent + eight slash commands
-- [ ] Task 15: M0 micro-eval harness + synthesized labeled set
-- [ ] Task 16: End-to-end acceptance + sample artifacts
+- [x] Task 15: M0 micro-eval harness + synthesized labeled set
+- [x] Task 16: End-to-end acceptance + sample artifacts
 
-**Total Tasks:** 16 | **Completed:** 0 | **Remaining:** 16
+**Total Tasks:** 16 | **Completed:** 16 | **Remaining:** 0
 
 ## Implementation Tasks
 
