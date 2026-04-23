@@ -261,7 +261,7 @@ Type: Feature
 ## Progress Tracking
 
 - [x] Task 1: Plugin scaffold & manifests
-- [ ] Task 2: Python MCP server scaffold + pytest harness
+- [x] Task 2: Python MCP server scaffold + pytest harness
 - [ ] Task 3: DB layer (schema, FTS5, WAL, async write-lock)
 - [ ] Task 4: Normalize module (Czech inflection)
 - [ ] Task 5: Index module (phonetic + trigram + rebuild-on-mutation)
