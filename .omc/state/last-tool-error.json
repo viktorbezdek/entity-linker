@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"uv run --directory mcp-server ruff check . && uv run --directory mcp-server pytest tests/test_render.py tests/test_elicit.py -q --cov=entity_db.render --cov=entity_db.elicit --cov-fail-und...",
-  "error": "Exit code 1\nwarning: `VIRTUAL_ENV=/Users/vbezdek/.cache/uv/builds-v0/.tmpz3gxyM` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\nAll checks passed!\nwarning: `VIRTUAL_ENV=/Users/vbezdek/.cache/uv/builds-v0/.tmpz3gxyM` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\n.................\nERROR: Coverage failure: total of 84 is less than fail-...",
-  "timestamp": "2026-04-23T10:58:39.273Z",
-  "retry_count": 3
+  "tool_input_preview": "{\"command\":\"uv run --directory mcp-server ruff check . --fix 2>&1 && uv run --directory mcp-server pytest tests/test_app_disambiguation.py -q --cov=entity_db.tools.app_disambiguation --cov-fail-under=...",
+  "error": "Exit code 1\nwarning: `VIRTUAL_ENV=/Users/vbezdek/.cache/uv/builds-v0/.tmpz3gxyM` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\nAll checks passed!\nwarning: `VIRTUAL_ENV=/Users/vbezdek/.cache/uv/builds-v0/.tmpz3gxyM` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\n...\nERROR: Coverage failure: total of 72 is less than fail-under=75\n     ...",
+  "timestamp": "2026-04-23T11:06:13.670Z",
+  "retry_count": 1
 }

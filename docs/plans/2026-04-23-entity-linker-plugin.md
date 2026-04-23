@@ -268,8 +268,8 @@ Type: Feature
 - [x] Task 6: Candidate generation + scoring + type_fit rules
 - [x] Task 7: Coref + `resolve_link_text` orchestrator
 - [x] Task 8: Catalog / staging / pending tools + YAML seed import
-- [ ] Task 9: Elicitation fallback + render module
-- [ ] Task 10: MCP Apps scaffold (Vite + shared postMessage lib)
+- [x] Task 9: Elicitation fallback + render module
+- [x] Task 10: MCP Apps scaffold (Vite + shared postMessage lib)
 - [ ] Task 11: Disambiguation App UI + tool wiring
 - [ ] Task 12: Staging Review App UI + tool wiring
 - [ ] Task 13: Four skills (entity-linker, entity-matcher, input-preprocessing, entity-catalog-manage)
