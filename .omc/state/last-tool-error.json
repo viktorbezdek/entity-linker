@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"uv run ruff check . && uv run pytest tests/test_db.py -q --cov=entity_db.db --cov-fail-under=80 2>&1\",\"timeout\":60000,\"description\":\"Ruff lint + DB tests with coverage\"}",
-  "error": "Exit code 4\nAll checks passed!\nERROR: usage: pytest [options] [file_or_dir] [file_or_dir] [...]\npytest: error: unrecognized arguments: --cov=entity_db.db --cov-fail-under=80\n  inifile: None\n  rootdir: /Users/vbezdek/Work/entitiy-memory-plugin",
-  "timestamp": "2026-04-23T10:25:46.071Z",
-  "retry_count": 3
+  "tool_input_preview": "{\"command\":\"uv run --directory mcp-server ruff check . --fix 2>&1 && uv run --directory mcp-server pytest tests/test_normalize.py -q --cov=entity_db.matching.normalize --cov-fail-under=95 2>&1\",\"timeo...",
+  "error": "Exit code 1\nwarning: `VIRTUAL_ENV=/Users/vbezdek/.cache/uv/builds-v0/.tmpz3gxyM` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\nFound 1 error (1 fixed, 0 remaining).\nwarning: `VIRTUAL_ENV=/Users/vbezdek/.cache/uv/builds-v0/.tmpz3gxyM` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\n.F......F.........                                    ...",
+  "timestamp": "2026-04-23T10:29:43.453Z",
+  "retry_count": 2
 }
