@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.coverage
+.ruff_cache/
+htmlcov/
+.mypy_cache/
+
+# Node / Vite
+node_modules/
+mcp-server/apps/*/dist/
+mcp-server/apps/*/node_modules/
+
+# SQLite
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+entity-db/
+
+# uv
+mcp-server/.venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Eval results (keep source, ignore output)
+eval/results/

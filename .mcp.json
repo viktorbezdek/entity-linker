@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "entity-db": {
+      "command": "uv",
+      "args": ["run", "--directory", "${CLAUDE_PLUGIN_ROOT}/mcp-server", "entity-db"],
+      "env": {
+        "ENTITY_DB_PATH": "${HOME}/entity-db/entities.sqlite"
+      }
+    }
+  }
+}
