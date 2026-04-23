@@ -1,0 +1,421 @@
+# M0 Micro-Eval Labeled Span Set
+# Synthesized from PRD examples + B2C entity corpus. Viktor reviews before running.
+#
+# Fields:
+#   text: source sentence
+#   span: [start, end] byte offsets of the surface form
+#   expected_entity: entity_id the span should resolve to (null = should NOT link)
+#   expected_method: "auto" | "ambiguous" | "unresolved"
+#   source_type: text type for preprocessing
+#   category: test category for per-category breakdown
+#   notes: human-readable rationale
+
+version: 1
+reviewed: pending  # Viktor sets to "approved" after review
+
+spans:
+  # ── Category: person exact match (10 spans) ────────────────────────────────
+  - text: "I synced with Viktor yesterday about the Q3 roadmap"
+    span: [14, 20]
+    expected_entity: viktor-bezdek
+    expected_method: ambiguous
+    source_type: markdown
+    category: person_exact
+    notes: "Person cue 'with'; exact alias 'viktor'; first occurrence → ambiguous"
+
+  - text: "Viktor presented the roadmap to the team"
+    span: [0, 6]
+    expected_entity: viktor-bezdek
+    expected_method: ambiguous
+    source_type: markdown
+    category: person_exact
+    notes: "No direct person cue; first occurrence → ambiguous"
+
+  - text: "Tomas confirmed the timeline last week"
+    span: [0, 5]
+    expected_entity: tomas-novak
+    expected_method: ambiguous
+    source_type: markdown
+    category: person_exact
+    notes: "Alias 'Tomas'; first occurrence → ambiguous"
+
+  - text: "Let's get Adam to review this before shipping"
+    span: [10, 14]
+    expected_entity: adam-korinek
+    expected_method: ambiguous
+    source_type: markdown
+    category: person_exact
+    notes: "Alias 'Adam'; person cue 'get ... to'"
+
+  - text: "I met Viktor and Tomas at the all-hands"
+    span: [6, 12]
+    expected_entity: viktor-bezdek
+    expected_method: ambiguous
+    source_type: markdown
+    category: person_exact
+    notes: "Person cue 'met'; Viktor"
+
+  - text: "I met Viktor and Tomas at the all-hands"
+    span: [17, 22]
+    expected_entity: tomas-novak
+    expected_method: ambiguous
+    source_type: markdown
+    category: person_exact
+    notes: "Person cue 'met'; Tomas"
+
+  - text: "Viktor will present the results on Friday"
+    span: [0, 6]
+    expected_entity: viktor-bezdek
+    expected_method: ambiguous
+    source_type: email
+    category: person_exact
+    notes: "No strong person cue; email context"
+
+  - text: "Called Tomas to discuss the sprint scope"
+    span: [7, 12]
+    expected_entity: tomas-novak
+    expected_method: ambiguous
+    source_type: asr
+    category: person_exact
+    notes: "ASR; person cue 'called'"
+
+  - text: "Adam approved the design doc this morning"
+    span: [0, 4]
+    expected_entity: adam-korinek
+    expected_method: ambiguous
+    source_type: markdown
+    category: person_exact
+    notes: "No strong person cue; first occurrence"
+
+  - text: "We need Viktor's sign-off before EOD"
+    span: [8, 14]
+    expected_entity: viktor-bezdek
+    expected_method: ambiguous
+    source_type: markdown
+    category: person_exact
+    notes: "Possessive 'Viktor' — suffix stripping should handle 's'"
+
+  # ── Category: Czech inflection (10 spans) ──────────────────────────────────
+  - text: "Mluvil jsem s Viktorovi včera"
+    span: [14, 23]
+    expected_entity: viktor-bezdek
+    expected_method: ambiguous
+    source_type: markdown
+    category: czech_inflection
+    notes: "Czech dative '-ovi'; should normalize to 'viktor'"
+
+  - text: "Bezdekovy plány na příští rok"
+    span: [0, 8]
+    expected_entity: viktor-bezdek
+    expected_method: ambiguous
+    source_type: markdown
+    category: czech_inflection
+    notes: "Czech possessive '-ovy'; 'Bezdekovy' → 'bezdek'"
+
+  - text: "Setkali se s Tomasem na schůzce"
+    span: [14, 21]
+    expected_entity: tomas-novak
+    expected_method: ambiguous
+    source_type: markdown
+    category: czech_inflection
+    notes: "Czech instrumental '-em'; 'Tomasem' → 'tomas'"
+
+  - text: "Adama jsme pozvali na kick-off"
+    span: [0, 5]
+    expected_entity: adam-korinek
+    expected_method: ambiguous
+    source_type: markdown
+    category: czech_inflection
+    notes: "Czech accusative '-a'; 'Adama' → 'adam'"
+
+  - text: "Viktorovi se ten nápad líbil"
+    span: [0, 8]
+    expected_entity: viktor-bezdek
+    expected_method: ambiguous
+    source_type: markdown
+    category: czech_inflection
+    notes: "Dative 'Viktorovi' → 'viktor'"
+
+  - text: "Tomáš přijde na meeting zítra"
+    span: [0, 5]
+    expected_entity: tomas-novak
+    expected_method: ambiguous
+    source_type: markdown
+    category: czech_inflection
+    notes: "Diacritic 'Tomáš' → normalized 'tomas'"
+
+  - text: "Dotazal jsem se Viktorem na status"
+    span: [16, 23]
+    expected_entity: viktor-bezdek
+    expected_method: ambiguous
+    source_type: markdown
+    category: czech_inflection
+    notes: "Czech instrumental 'Viktorem' → 'viktor'"
+
+  - text: "Spolupracujeme s Adamem na Q4 plánu"
+    span: [17, 22]
+    expected_entity: adam-korinek
+    expected_method: ambiguous
+    source_type: markdown
+    category: czech_inflection
+    notes: "Czech instrumental 'Adamem' → 'adam'"
+
+  - text: "Tomase jsme neviděli od minulého sprintu"
+    span: [0, 6]
+    expected_entity: tomas-novak
+    expected_method: ambiguous
+    source_type: markdown
+    category: czech_inflection
+    notes: "Czech genitive 'Tomase' → 'tomas'"
+
+  - text: "Zpráva od Viktora dorazila včas"
+    span: [10, 16]
+    expected_entity: viktor-bezdek
+    expected_method: ambiguous
+    source_type: markdown
+    category: czech_inflection
+    notes: "Czech genitive 'Viktora' → 'viktor'"
+
+  # ── Category: project / team / company (8 spans) ──────────────────────────
+  - text: "The Foundry AI project rollout is on schedule"
+    span: [4, 14]
+    expected_entity: foundry-ai
+    expected_method: ambiguous
+    source_type: markdown
+    category: project_exact
+    notes: "Project cue 'project'; 'Foundry AI'"
+
+  - text: "FoundryAI launch was postponed to Q4"
+    span: [0, 9]
+    expected_entity: foundry-ai
+    expected_method: ambiguous
+    source_type: markdown
+    category: project_exact
+    notes: "Project cue 'launch'; alias 'foundryai'"
+
+  - text: "The B2C tribe is leading the initiative"
+    span: [4, 13]
+    expected_entity: b2c-tribe
+    expected_method: ambiguous
+    source_type: markdown
+    category: team_exact
+    notes: "Team cue 'tribe'; alias 'b2c tribe'"
+
+  - text: "Working at Groupon has been great"
+    span: [11, 18]
+    expected_entity: groupon
+    expected_method: ambiguous
+    source_type: markdown
+    category: company_exact
+    notes: "Company cue 'at'; alias 'groupon'"
+
+  - text: "Groupon acquired a new data vendor last week"
+    span: [0, 7]
+    expected_entity: groupon
+    expected_method: ambiguous
+    source_type: markdown
+    category: company_exact
+    notes: "Company cue 'acquired'"
+
+  - text: "The B2C team reviewed the designs"
+    span: [4, 7]
+    expected_entity: b2c-tribe
+    expected_method: ambiguous
+    source_type: markdown
+    category: team_exact
+    notes: "Team cue 'team'; alias 'b2c'"
+
+  - text: "Foundry is the backbone of our ML platform"
+    span: [0, 6]
+    expected_entity: foundry-ai
+    expected_method: ambiguous
+    source_type: markdown
+    category: project_exact
+    notes: "Alias 'foundry'; no direct project cue"
+
+  - text: "GRPN stock is up 3% today"
+    span: [0, 4]
+    expected_entity: groupon
+    expected_method: ambiguous
+    source_type: markdown
+    category: company_exact
+    notes: "Acronym alias 'GRPN'"
+
+  # ── Category: should-not-link (10 spans) ──────────────────────────────────
+  - text: "The meeting was great and productive"
+    span: [4, 11]
+    expected_entity: null
+    expected_method: unresolved
+    source_type: markdown
+    category: should_not_link
+    notes: "Common word 'meeting' — should not link to any entity"
+
+  - text: "We discussed the new product roadmap"
+    span: [25, 32]
+    expected_entity: null
+    expected_method: unresolved
+    source_type: markdown
+    category: should_not_link
+    notes: "Common word 'roadmap' — not an entity"
+
+  - text: "The team worked late on Friday"
+    span: [4, 8]
+    expected_entity: null
+    expected_method: unresolved
+    source_type: markdown
+    category: should_not_link
+    notes: "Generic word 'team' without specific team name"
+
+  - text: "John from marketing joined the call"
+    span: [0, 4]
+    expected_entity: null
+    expected_method: unresolved
+    source_type: markdown
+    category: should_not_link
+    notes: "Unknown person 'John' — not in catalog"
+
+  - text: "The sprint planning is on Monday"
+    span: [4, 10]
+    expected_entity: null
+    expected_method: unresolved
+    source_type: markdown
+    category: should_not_link
+    notes: "'sprint' is not a project entity"
+
+  - text: "Sarah will handle the onboarding"
+    span: [0, 5]
+    expected_entity: null
+    expected_method: unresolved
+    source_type: markdown
+    category: should_not_link
+    notes: "Unknown person 'Sarah'"
+
+  - text: "Alex presented the monthly report"
+    span: [0, 4]
+    expected_entity: null
+    expected_method: unresolved
+    source_type: markdown
+    category: should_not_link
+    notes: "Unknown person 'Alex'"
+
+  - text: "The dashboard feature shipped last week"
+    span: [4, 13]
+    expected_entity: null
+    expected_method: unresolved
+    source_type: markdown
+    category: should_not_link
+    notes: "Generic 'dashboard' not in catalog"
+
+  - text: "Project Atlas is behind schedule"
+    span: [0, 13]
+    expected_entity: null
+    expected_method: unresolved
+    source_type: markdown
+    category: should_not_link
+    notes: "'Project Atlas' not in catalog"
+
+  - text: "The company announced layoffs yesterday"
+    span: [4, 11]
+    expected_entity: null
+    expected_method: unresolved
+    source_type: markdown
+    category: should_not_link
+    notes: "Generic 'company' — not Groupon specifically"
+
+  # ── Category: ASR noise variants (7 spans) ─────────────────────────────────
+  - text: "[00:00:15] Viktor: Let's discuss the roadmap"
+    span: [12, 18]
+    expected_entity: viktor-bezdek
+    expected_method: ambiguous
+    source_type: asr
+    category: asr_noise
+    notes: "ASR with timestamp + speaker label; 'Viktor' should resolve"
+
+  - text: "[00:01:30] Tomas: I agree with the proposal"
+    span: [12, 17]
+    expected_entity: tomas-novak
+    expected_method: ambiguous
+    source_type: asr
+    category: asr_noise
+    notes: "ASR speaker label 'Tomas'"
+
+  - text: "um so Viktor was saying that uh the project needs"
+    span: [6, 12]
+    expected_entity: viktor-bezdek
+    expected_method: ambiguous
+    source_type: asr
+    category: asr_noise
+    notes: "Filler tokens around entity; after clean_asr, 'Viktor' visible"
+
+  - text: "Adam uh approved the design spec"
+    span: [0, 4]
+    expected_entity: adam-korinek
+    expected_method: ambiguous
+    source_type: asr
+    category: asr_noise
+    notes: "Filler after name; should still resolve 'Adam'"
+
+  - text: "[00:05:00] Viktor Bezdek: Good morning everyone"
+    span: [12, 24]
+    expected_entity: viktor-bezdek
+    expected_method: ambiguous
+    source_type: asr
+    category: asr_noise
+    notes: "Full name 'Viktor Bezdek' as speaker label"
+
+  - text: "Groupon Incorporated is our employer"
+    span: [0, 7]
+    expected_entity: groupon
+    expected_method: ambiguous
+    source_type: asr
+    category: asr_noise
+    notes: "Company name with suffix 'Incorporated'"
+
+  - text: "So the B2C team yeah met yesterday"
+    span: [7, 10]
+    expected_entity: b2c-tribe
+    expected_method: ambiguous
+    source_type: asr
+    category: asr_noise
+    notes: "Team alias 'B2C' with filler 'yeah'"
+
+  # ── Category: email context (5 spans) ──────────────────────────────────────
+  - text: "From: viktor.bezdek@groupon.com\nTo: team@groupon.com\nSubject: Meeting\n\nHi, I wanted to follow up on the Foundry AI launch."
+    span: [99, 109]
+    expected_entity: foundry-ai
+    expected_method: ambiguous
+    source_type: email
+    category: email_context
+    notes: "Email body; 'Foundry AI' after headers stripped"
+
+  - text: "From: tomas@groupon.com\nTo: all@groupon.com\nSubject: Sprint\n\nViktor will present the Q3 results tomorrow."
+    span: [67, 73]
+    expected_entity: viktor-bezdek
+    expected_method: ambiguous
+    source_type: email
+    category: email_context
+    notes: "Email body reference to Viktor"
+
+  - text: "From: adam@groupon.com\nTo: b2c@groupon.com\nSubject: Update\n\nThe Groupon partnership is confirmed."
+    span: [76, 83]
+    expected_entity: groupon
+    expected_method: ambiguous
+    source_type: email
+    category: email_context
+    notes: "Email body reference to Groupon"
+
+  - text: "From: alice@external.com\nTo: team@groupon.com\nSubject: Intro\n\nLooking forward to working with the B2C tribe."
+    span: [100, 109]
+    expected_entity: b2c-tribe
+    expected_method: ambiguous
+    source_type: email
+    category: email_context
+    notes: "External email; 'B2C tribe' in body"
+
+  - text: "From: pm@groupon.com\nTo: eng@groupon.com\nSubject: Launch\n\nThe FoundryAI rollout is on track for next week."
+    span: [65, 74]
+    expected_entity: foundry-ai
+    expected_method: ambiguous
+    source_type: email
+    category: email_context
+    notes: "Email body; alias 'FoundryAI'"
