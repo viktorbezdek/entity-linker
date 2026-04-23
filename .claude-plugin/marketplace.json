@@ -16,7 +16,7 @@
         "name": "Viktor Bezdek",
         "email": "viktor.bezdek@groupon.com"
       },
-      "source": ".",
+      "source": "./plugins/entity-linker",
       "category": "productivity",
       "keywords": ["text", "ner", "entity-linking", "transcripts", "email", "groupon", "b2c"]
     }

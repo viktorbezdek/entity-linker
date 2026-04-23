@@ -1,8 +1,8 @@
 ---
 paths:
-  - "mcp-server/**/*.py"
-  - "mcp-server/**/*.ts"
-  - "mcp-server/**/*.tsx"
+  - "plugins/entity-linker/mcp-server/**/*.py"
+  - "plugins/entity-linker/mcp-server/**/*.ts"
+  - "plugins/entity-linker/mcp-server/**/*.tsx"
 ---
 
 # entity-linker Conventions

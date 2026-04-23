@@ -1,7 +1,7 @@
 {
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"uv run --directory /Users/vbezdek/Work/entitiy-memory-plugin/mcp-server ruff check . && uv run --directory /Users/vbezdek/Work/entitiy-memory-plugin/mcp-server pytest tests/test_server.py ...",
-  "error": "Exit code 1\nwarning: `VIRTUAL_ENV=/Users/vbezdek/.cache/uv/builds-v0/.tmpz3gxyM` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\nF401 [*] `tempfile` imported but unused\n --> tests/test_server.py:4:8\n  |\n2 | import asyncio\n3 | import json\n4 | import tempfile\n  |        ^^^^^^^^\n5 | from pathlib import Path\n  |\nhelp: Remove unused import: `tempfile`\n\nFound 1 error.\n[*] 1 fixable with the `--fix` option.",
-  "timestamp": "2026-04-23T11:45:45.128Z",
+  "tool_name": "mcp__plugin_pilot_web-search__search",
+  "tool_input_preview": "{\"query\":\"Claude Code marketplace.json schema .claude-plugin plugins source field example\",\"limit\":\"5\"}",
+  "error": "MCP error -32602: Input validation error: Invalid arguments for tool search: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"number\",\n    \"received\": \"string\",\n    \"path\": [\n      \"limit\"\n    ],\n    \"message\": \"Expected number, received string\"\n  }\n]",
+  "timestamp": "2026-04-23T12:30:30.493Z",
   "retry_count": 1
 }
