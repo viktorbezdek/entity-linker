@@ -272,7 +272,7 @@ Type: Feature
 - [x] Task 10: MCP Apps scaffold (Vite + shared postMessage lib)
 - [x] Task 11: Disambiguation App UI + tool wiring
 - [x] Task 12: Staging Review App UI + tool wiring
-- [ ] Task 13: Four skills (entity-linker, entity-matcher, input-preprocessing, entity-catalog-manage)
+- [x] Task 13: Four skills (entity-linker, entity-matcher, input-preprocessing, entity-catalog-manage)
 - [ ] Task 14: Subagent + eight slash commands
 - [ ] Task 15: M0 micro-eval harness + synthesized labeled set
 - [ ] Task 16: End-to-end acceptance + sample artifacts
