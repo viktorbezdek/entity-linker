@@ -263,7 +263,7 @@ Type: Feature
 - [x] Task 1: Plugin scaffold & manifests
 - [x] Task 2: Python MCP server scaffold + pytest harness
 - [x] Task 3: DB layer (schema, FTS5, WAL, async write-lock)
-- [ ] Task 4: Normalize module (Czech inflection)
+- [x] Task 4: Normalize module (Czech inflection)
 - [ ] Task 5: Index module (phonetic + trigram + rebuild-on-mutation)
 - [ ] Task 6: Candidate generation + scoring + type_fit rules
 - [ ] Task 7: Coref + `resolve_link_text` orchestrator

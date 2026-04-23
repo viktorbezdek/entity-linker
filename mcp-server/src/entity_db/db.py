@@ -67,19 +67,63 @@ async def rebuild_fts_for(conn: sqlite3.Connection, entity_id: str) -> None:
         await asyncio.to_thread(_rebuild, conn, entity_id)
 
 
-# ── Index rebuild stubs (real logic lands in Task 5) ─────────────────────────
+# ── Phonetic and trigram index rebuilds ──────────────────────────────────────
 
 
-async def rebuild_phonetic_for(
-    _conn: sqlite3.Connection, _alias_key: str
-) -> None:
-    """Rebuild phonetic_index rows for alias_key. Implemented fully in Task 5."""
+def _alias_exists(conn: sqlite3.Connection, alias_key: str) -> bool:
+    return (
+        conn.execute(
+            "SELECT 1 FROM aliases WHERE alias_key = ? LIMIT 1", (alias_key,)
+        ).fetchone()
+        is not None
+    )
 
 
-async def rebuild_trigrams_for(
-    _conn: sqlite3.Connection, _alias_key: str
-) -> None:
-    """Rebuild trigrams rows for alias_key. Implemented fully in Task 5."""
+async def rebuild_phonetic_for(conn: sqlite3.Connection, alias_key: str) -> None:
+    """Sync phonetic_index for alias_key.
+
+    If the alias still exists in the DB, recompute and write its phonetic keys.
+    If the alias was deleted, remove any stale phonetic_index rows.
+    """
+    from entity_db.matching.index import compute_phonetic_keys, write_phonetic_index
+
+    exists = await asyncio.to_thread(_alias_exists, conn, alias_key)
+    if exists:
+        keys = compute_phonetic_keys(alias_key)
+        async with _write_lock:
+            await asyncio.to_thread(write_phonetic_index, conn, alias_key, keys)
+    else:
+        async with _write_lock:
+            await asyncio.to_thread(
+                lambda: (
+                    conn.execute(
+                        "DELETE FROM phonetic_index WHERE alias_key = ?", (alias_key,)
+                    ),
+                    conn.commit(),
+                )
+            )
+
+
+async def rebuild_trigrams_for(conn: sqlite3.Connection, alias_key: str) -> None:
+    """Sync trigrams for alias_key.
+
+    If the alias still exists, recompute. If deleted, remove stale rows.
+    """
+    from entity_db.matching.index import compute_trigrams, write_trigrams
+
+    exists = await asyncio.to_thread(_alias_exists, conn, alias_key)
+    if exists:
+        trigrams = compute_trigrams(alias_key)
+        async with _write_lock:
+            await asyncio.to_thread(write_trigrams, conn, alias_key, trigrams)
+    else:
+        async with _write_lock:
+            await asyncio.to_thread(
+                lambda: (
+                    conn.execute("DELETE FROM trigrams WHERE alias_key = ?", (alias_key,)),
+                    conn.commit(),
+                )
+            )
 
 
 # ── Alias upsert helper (wires index rebuilds together) ──────────────────────
