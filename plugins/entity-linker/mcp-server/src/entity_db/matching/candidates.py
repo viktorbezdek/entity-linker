@@ -43,6 +43,30 @@ def _tokenize(text: str) -> list[tuple[str, int, int]]:
     return [(m.group(), m.start(), m.end()) for m in re.finditer(r"\S+", text)]
 
 
+def _looks_like_proper_name(surface: str) -> bool:
+    """True if the surface plausibly refers to a proper-noun entity.
+
+    Requires every whitespace-delimited token to begin with an uppercase ASCII
+    or Unicode letter (so Czech/Polish names like "Jiří" still match). Common
+    English/Czech/Slovak stopwords anywhere in the surface disqualify it — this
+    blocks phonetic matches such as "a broken parent" → adam-korinek or
+    "Maya on the" → tanya-hernandez which are the dominant source of noise.
+    """
+    tokens = surface.split()
+    if not tokens:
+        return False
+    for tok in tokens:
+        stripped = tok.strip(".,;:!?\"'()[]{}")
+        if not stripped:
+            return False
+        if stripped.lower() in STOPWORDS:
+            return False
+        first = stripped[0]
+        if not first.isalpha() or first != first.upper():
+            return False
+    return True
+
+
 async def _exact_lookup(
     db: sqlite3.Connection, alias_key: str
 ) -> list[tuple[str, str, str]]:
@@ -119,14 +143,20 @@ async def generate_candidates(
                             surface, ak, span_start, span_end, eid, etype, False
                         )
 
-                phon = await _phonetic_lookup(db, alias_key)
-                for eid, etype, ak in phon:
-                    if ak in STOPWORDS:
-                        continue
-                    k = f"{span_start}:{span_end}:{eid}"
-                    if k not in seen:
-                        seen[k] = CandidateSpan(
-                            surface, ak, span_start, span_end, eid, etype, True
-                        )
+                # Phonetic lookup is the dominant source of false positives
+                # (common English phrases hash to names by Double Metaphone /
+                # Beider-Morse). Gate it on surface looking like a proper name —
+                # all tokens uppercase-first, no stopwords — so "a broken
+                # parent Order" and "Maya on the" never reach the scorer.
+                if _looks_like_proper_name(surface):
+                    phon = await _phonetic_lookup(db, alias_key)
+                    for eid, etype, ak in phon:
+                        if ak in STOPWORDS:
+                            continue
+                        k = f"{span_start}:{span_end}:{eid}"
+                        if k not in seen:
+                            seen[k] = CandidateSpan(
+                                surface, ak, span_start, span_end, eid, etype, True
+                            )
 
     return list(seen.values())

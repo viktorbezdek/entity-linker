@@ -126,6 +126,52 @@ async def test_auto_linked_span_written_to_resolution_log(tmp_db_path: Path) -> 
     await asyncio.to_thread(conn.close)
 
 
+# ── single-token surface never auto-links (guard against silent wrong-links) ──
+
+
+@pytest.mark.asyncio
+async def test_single_token_surface_does_not_auto_link(tmp_db_path: Path) -> None:
+    """A bare first name like 'Viktor' phonetically matches many people; even
+    when the top score clears _AUTO_SCORE and the gap clears _AUTO_GAP, we
+    must route it to the ambiguity queue, not auto-link it silently."""
+    conn = await open_db(tmp_db_path)
+    # Seed one Viktor; no competitors in this test DB so score will be high.
+    await _seed(conn, "vb", "person", "Viktor Bezdek", "Viktor")
+
+    text = "synced with Viktor about the roadmap"
+    opts = ResolveOptions(interactive=False)
+    result = await resolve_link_text(text, "markdown", opts, conn)
+
+    # Zero auto-links — the single-token "Viktor" must be queued, not linked.
+    auto_linked = [r for r in result.resolutions if r.method == "auto"]
+    assert auto_linked == [], (
+        "Single-token surfaces must never auto-link — only full-name surfaces"
+        f" (≥2 capitalized tokens) are safe. Got: {auto_linked}"
+    )
+    await asyncio.to_thread(conn.close)
+
+
+# ── full-name surface auto-links cleanly ──────────────────────────────────────
+
+
+@pytest.mark.asyncio
+async def test_full_name_surface_can_auto_link(tmp_db_path: Path) -> None:
+    """A two-token capitalized full name with a clear score+gap advantage
+    should auto-link. This is the target happy path for the matcher."""
+    conn = await open_db(tmp_db_path)
+    await _seed(conn, "vb", "person", "Viktor Bezdek", "Viktor Bezdek")
+
+    text = "synced with Viktor Bezdek about the roadmap"
+    opts = ResolveOptions(interactive=False)
+    result = await resolve_link_text(text, "markdown", opts, conn)
+
+    auto_linked = [r for r in result.resolutions if r.method == "auto"]
+    assert any(
+        r.entity_id == "vb" and r.surface == "Viktor Bezdek" for r in auto_linked
+    ), f"Full-name surface should auto-link. resolutions={result.resolutions}"
+    await asyncio.to_thread(conn.close)
+
+
 # ── coref propagation ─────────────────────────────────────────────────────────
 
 

@@ -54,12 +54,34 @@ class ResolveResult:
     source_hash: str
 
 
-# Auto-link thresholds
-_AUTO_SCORE = 0.90
+# Auto-link thresholds. Original _AUTO_SCORE of 0.90 was unreachable in
+# practice — the scoring formula caps first-occurrence matches around 0.80–0.85
+# (no recency boost, possible ambig penalty). 0.82 still requires strong
+# lexical+phonetic agreement AND a clear 0.10 gap over the runner-up.
+_AUTO_SCORE = 0.82
 _AUTO_GAP = 0.10
 _AMBIG_SCORE = 0.70
 
 _CAPITAL_RE = re.compile(r"\b[A-Z][A-Za-z0-9]+(?:\s+[A-Z][A-Za-z0-9]+)*\b")
+
+
+def _is_full_name_surface(surface: str) -> bool:
+    """True if the surface looks like a full name safe for silent auto-link.
+
+    Single-token proper nouns (e.g. "Viktor", "Pokorny") routinely phonetically
+    match several people with similar scores, and a 0.10 gap is easy to reach
+    by chance — that would produce silent wrong-links. Only auto-link when the
+    surface is at least two tokens and every token starts with a capital letter.
+    Single-token matches still go to the ambiguity queue for review.
+    """
+    tokens = surface.split()
+    if len(tokens) < 2:
+        return False
+    for tok in tokens:
+        stripped = tok.strip(".,;:!?\"'()[]{}")
+        if not stripped or not stripped[0].isalpha() or stripped[0] != stripped[0].upper():
+            return False
+    return True
 
 
 def _source_hash(text: str) -> str:
@@ -198,7 +220,12 @@ async def resolve_link_text(
         top_score, top_cand = scored[0]
         second_score = scored[1][0] if len(scored) > 1 else 0.0
 
-        if top_score >= _AUTO_SCORE and (top_score - second_score) >= _AUTO_GAP:
+        can_auto = (
+            top_score >= _AUTO_SCORE
+            and (top_score - second_score) >= _AUTO_GAP
+            and _is_full_name_surface(surface)
+        )
+        if can_auto:
             r = Resolution(
                 surface=surface, span_start=start, span_end=end,
                 entity_id=top_cand.entity_id, entity_type=top_cand.entity_type,
