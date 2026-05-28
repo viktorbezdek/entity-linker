@@ -11,11 +11,11 @@ Bulk-imports entities from a YAML seed file into the catalog. Each entity is val
 ```yaml
 version: 1
 entities:
-  - id: viktor-bezdek
+  - id: stefan-weber
     type: person
-    canonical_name: Viktor Bezdek
-    disambiguation_hint: "Groupon AI lead"
-    aliases: [Viktor, VB]
+    canonical_name: Stefan Weber
+    disambiguation_hint: "AI lead"
+    aliases: [Stefan, SW]
 ```
 
 **Example:**

@@ -20,7 +20,7 @@ async def conn(tmp_db_path: Path):
     await asyncio.to_thread(c.close)
 
 
-async def _seed_pending(conn, source_hash: str = "abc123", surface: str = "Viktor") -> str:
+async def _seed_pending(conn, source_hash: str = "abc123", surface: str = "Stefan") -> str:
     pid = str(uuid.uuid4())
     await asyncio.to_thread(
         lambda: (
@@ -52,15 +52,15 @@ async def test_resolve_disambiguate_app_returns_pending_items(conn) -> None:
     result = await resolve_disambiguate_app(ctx=_FakeCtx(), source_hash=source_hash)
 
     assert len(result) >= 1
-    assert result[0]["surface"] == "Viktor"
+    assert result[0]["surface"] == "Stefan"
     assert result[0]["source_hash"] == source_hash
 
 
 @pytest.mark.asyncio
 async def test_resolve_disambiguate_app_filters_by_ambiguity_ids(conn) -> None:
     source_hash = "abc456"
-    pid1 = await _seed_pending(conn, source_hash=source_hash, surface="Viktor")
-    await _seed_pending(conn, source_hash=source_hash, surface="Tomas")
+    pid1 = await _seed_pending(conn, source_hash=source_hash, surface="Stefan")
+    await _seed_pending(conn, source_hash=source_hash, surface="Pavel")
 
     result = await resolve_disambiguate_app(
         ctx=_FakeCtx(),

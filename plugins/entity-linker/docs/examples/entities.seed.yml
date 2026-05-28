@@ -1,53 +1,52 @@
 version: 1
 entities:
-  - id: viktor-bezdek
+  - id: stefan-weber
     type: person
-    canonical_name: Viktor Bezdek
-    disambiguation_hint: "Groupon AI lead, Prague"
+    canonical_name: Stefan Weber
+    disambiguation_hint: "AI lead"
     aliases:
-      - Viktor
-      - VB
+      - Stefan
+      - SW
     attributes:
-      company: groupon
-      team: b2c-tribe
+      company: horizon
+      team: core-team
 
-  - id: tomas-novak
+  - id: pavel-kolar
     type: person
-    canonical_name: Tomáš Novák
-    disambiguation_hint: "B2C EM, Prague"
+    canonical_name: Pavel Kolář
+    disambiguation_hint: "Engineering Manager"
     aliases:
-      - Tomas
-      - Tom
-      - Tomáš
+      - Pavel
+      - PK
 
-  - id: adam-korinek
+  - id: petr-hanak
     type: person
-    canonical_name: Adam Kořínek
-    disambiguation_hint: "B2C EM"
+    canonical_name: Petr Hanák
+    disambiguation_hint: "Engineering Manager"
     aliases:
-      - Adam
-      - Korinek
+      - Petr
+      - Hanak
 
-  - id: groupon
+  - id: horizon
     type: company
-    canonical_name: Groupon
+    canonical_name: Horizon
     disambiguation_hint: "Global e-commerce marketplace"
     aliases:
-      - Groupon
-      - GRPN
+      - Horizon
+      - HRZN
 
-  - id: foundry-ai
+  - id: quantum-ai
     type: project
-    canonical_name: Foundry AI
+    canonical_name: Quantum AI
     disambiguation_hint: "Internal ML platform, 2026"
     aliases:
-      - FoundryAI
-      - Foundry
+      - QuantumAI
+      - Quantum
 
-  - id: b2c-tribe
+  - id: core-team
     type: team
-    canonical_name: B2C Tribe
-    disambiguation_hint: "Business-to-consumer engineering tribe"
+    canonical_name: Core Team
+    disambiguation_hint: "Core engineering team"
     aliases:
-      - B2C
-      - B2C Tribe
+      - Core
+      - Core Team

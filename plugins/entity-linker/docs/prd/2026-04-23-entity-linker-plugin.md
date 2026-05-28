@@ -1,7 +1,7 @@
 # PRD: `entity-linker` Plugin for Claude Code & Cowork
 
 Created: 2026-04-23
-Author: vbezdek@groupon.com
+Author: author@example.com
 Category: Feature
 Status: Final
 Version: 0.2
@@ -11,7 +11,7 @@ Research: None (domain expertise; no external research pass)
 
 ## 1. Problem Statement
 
-Noisy text inputs — call transcripts (Fireflies, Gong, Meet), emails, Slack exports, meeting notes, CRM blobs, internal docs — arrive with inconsistent names, acronyms, misspellings, inflection, and cross-language variants (English + Czech in particular). Downstream tooling (Echelon, meeting summaries, CRM updates, the intelligence-agent pipeline) consumes these inputs and silently bakes in bad references. A "Viktor" that should resolve to `viktor-bezdek` instead gets parsed as a new person. A "Foundry" that means `foundry-ai` gets merged with three unrelated projects. The result is polluted downstream state and degraded trust.
+Noisy text inputs — call transcripts (Fireflies, Gong, Meet), emails, Slack exports, meeting notes, CRM blobs, internal docs — arrive with inconsistent names, acronyms, misspellings, inflection, and cross-language variants (English + Czech in particular). Downstream tooling (Echelon, meeting summaries, CRM updates, the intelligence-agent pipeline) consumes these inputs and silently bakes in bad references. A "Stefan" that should resolve to `stefan-weber` instead gets parsed as a new person. A "Quantum" that means `quantum-ai` gets merged with three unrelated projects. The result is polluted downstream state and degraded trust.
 
 The failure mode isn't lack of matching; it's lack of **disciplined matching with ambiguity surfaced rather than guessed**.
 
@@ -42,8 +42,8 @@ All three share the plugin bundle — no divergence.
 
 ## 5. Users
 
-- **Viktor** — primary. Runs on meetings, emails, 1:1 notes; owns the catalog.
-- **B2C tribe EMs** (Tomas, Josef, Diana, Adam, Minas, Andres, Peter) — secondary. Run on their own inputs after v0 proves out.
+- **Primary user** — runs on meetings, emails, 1:1 notes; owns the catalog.
+- **Team EMs** — secondary. Run on their own inputs after v0 proves out.
 - **Intelligence-agent pipeline** — non-human consumer. Calls MCP tools headlessly; receives `{resolutions, ambiguities, new_candidates}` shape and writes non-auto items to queues for human review.
 
 ## 6. Principles (locked)
@@ -432,15 +432,15 @@ Library choice for Beider-Morse is **open for /spec**: evaluate `abydos`, `phone
 
 ### markdown (default)
 ```
-So I synced with [Viktor](@person:viktor-bezdek) yesterday about the
-[FoundryAI](@project:foundry-ai) rollout. He wants to loop in
-[Adam](@person:adam-korinek?) on the scheduling piece.
+So I synced with [Stefan](@person:stefan-weber) yesterday about the
+[QuantumAI](@project:quantum-ai) rollout. He wants to loop in
+[Petr](@person:petr-hanak?) on the scheduling piece.
 ```
 The `?` suffix flags a user-confirmed suggest-tier link.
 
 ### xml
 ```xml
-<entity id="viktor-bezdek" type="person" confidence="0.94">Viktor</entity>
+<entity id="stefan-weber" type="person" confidence="0.94">Stefan</entity>
 ```
 
 ### sidecar
@@ -537,10 +537,10 @@ Reference: `skills/entity-matcher/references/edge-cases.md`. Beyond v0.1: email 
 
 ## 23. Open Questions
 
-1. **Alias learning from confirmations.** If Viktor confirms `"Besdeck" → viktor-bezdek` five times, should the plugin auto-propose `Besdeck` as an alias in staging-review? v0 no, v1 maybe.
+1. **Alias learning from confirmations.** If a user confirms `"Webber" → stefan-weber` five times, should the plugin auto-propose `Webber` as an alias in staging-review? v0 no, v1 maybe.
 2. **Czech-specific phonetic algorithm.** Beider-Morse is multilingual but not Czech-tuned. If recall on Czech names is weak on M0 eval, add Czech pass in v1.
 3. **Bundled disambiguation.** v0 Disambiguation App lists all spans in one view but resolves one at a time; v1 could add "bulk-resolve same surface across spans."
-4. **Shared catalog across Viktor's tools.** Echelon + intelligence-agent reading the same SQLite is trivial via MCP, but ownership becomes contested. v2 with team model.
+4. **Shared catalog across tools.** Echelon + intelligence-agent reading the same SQLite is trivial via MCP, but ownership becomes contested. v2 with team model.
 5. **App tech stack.** React+Vite vs. vanilla TS+Vite vs. Preact — picked in /spec based on bundle size (Apps are iframes; smaller is better for cold load).
 6. **`entities.seed.yml` schema.** Exact YAML shape (flat vs. nested types, how aliases declared) — picked in /spec.
 
@@ -563,12 +563,12 @@ Reference: `skills/entity-matcher/references/edge-cases.md`. Beyond v0.1: email 
   "version": "0.1.0",
   "description": "Resolves entity mentions in text inputs (transcripts, emails, docs) against a local catalog. Interactive disambiguation via MCP Apps with elicitation fallback. Czech + English, phonetic + fuzzy + inflection-aware matching.",
   "author": {
-    "name": "Viktor Bezdek",
-    "email": "viktor.bezdek@groupon.com"
+    "name": "Your Name",
+    "email": "you@example.com"
   },
-  "license": "UNLICENSED",
-  "homepage": "https://github.com/viktorbezdek/entity-linker",
-  "keywords": ["text", "ner", "entity-linking", "transcripts", "email", "groupon", "b2c"]
+  "license": "MIT",
+  "homepage": "https://github.com/your-org/entity-linker",
+  "keywords": ["text", "ner", "entity-linking", "transcripts", "email"]
 }
 ```
 
@@ -593,17 +593,17 @@ Reference: `skills/entity-matcher/references/edge-cases.md`. Beyond v0.1: email 
 ```yaml
 version: 1
 entities:
-  - id: viktor-bezdek
+  - id: stefan-weber
     type: person
-    canonical_name: Viktor Bezdek
-    disambiguation_hint: "Groupon AI lead, Czech"
-    aliases: [Viktor, VB, Besdeck]
+    canonical_name: Stefan Weber
+    disambiguation_hint: "AI lead"
+    aliases: [Stefan, SW, Webber]
     attributes:
-      company: groupon
-      team: b2c-tribe
-  - id: foundry-ai
+      company: horizon
+      team: core-team
+  - id: quantum-ai
     type: project
-    canonical_name: Foundry AI
+    canonical_name: Quantum AI
     disambiguation_hint: "Internal ML platform, 2026"
-    aliases: [Foundry, FoundryAI]
+    aliases: [Quantum, QuantumAI]
 ```

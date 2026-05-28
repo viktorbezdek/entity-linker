@@ -38,11 +38,11 @@ async def test_ts001_resolve_standup_md(seeded_conn) -> None:
     result = await resolve_link_text(text, "markdown", opts, seeded_conn)
 
     assert result.source_hash is not None and len(result.source_hash) == 16
-    # At minimum: Viktor, FoundryAI, Tomas should be found as ambiguities or staged
+    # At minimum: Viktor, QuantumAI, Tomas should be found as ambiguities or staged
     total_found = len(result.resolutions) + len(result.ambiguities)
     assert total_found >= 2, f"Expected ≥ 2 entity references found, got {total_found}"
 
-    # Tomas IS in the catalog (tomas-novak alias) — appears as ambiguity, not staged
+    # Tomas IS in the catalog (pavel-kolar alias) — appears as ambiguity, not staged
     # Verify resolution_log or ambiguities reflect the processing
     log_count = await asyncio.to_thread(
         lambda: seeded_conn.execute(
@@ -65,8 +65,8 @@ async def test_ts004_catalog_bootstrap(seeded_conn) -> None:
     stats = await catalog_stats()
     assert stats["entities"] >= 5
 
-    results = await catalog_search("Viktor")
-    assert any(r["id"] == "viktor-bezdek" for r in results)
+    results = await catalog_search("Stefan")
+    assert any(r["id"] == "stefan-weber" for r in results)
 
 
 # ── TS-005: Headless batch run queues ambiguities ─────────────────────────────
@@ -96,13 +96,13 @@ async def test_ts005_headless_queues_non_auto(seeded_conn) -> None:
 
 @pytest.mark.asyncio
 async def test_ts006_czech_inflection(seeded_conn) -> None:
-    """TS-006: 'Viktorovi' (Czech dative) normalizes to 'viktor' and finds viktor-bezdek."""
+    """TS-006: 'Viktorovi' (Czech dative) normalizes to 'viktor' and finds stefan-weber."""
     text = "Mluvil jsem s Viktorovi včera o plánech"
     opts = ResolveOptions(interactive=False)
     result = await resolve_link_text(text, "markdown", opts, seeded_conn)
 
     # Viktor-bezdek should appear as an ambiguity (score ≥ 0.70 but < 0.90)
-    # "Viktorovi" should be found as a candidate pointing to viktor-bezdek
+    # "Viktorovi" should be found as a candidate pointing to stefan-weber
     assert len(result.ambiguities) >= 0  # no crash; full verification in E2E browser test
 
 
@@ -132,23 +132,23 @@ async def test_render_all_formats(seeded_conn) -> None:
     from entity_db.matching.resolver import Resolution
 
     r = Resolution(
-        surface="Viktor",
+        surface="Stefan",
         span_start=14,
         span_end=20,
-        entity_id="viktor-bezdek",
+        entity_id="stefan-weber",
         entity_type="person",
         confidence=0.92,
         method="user-confirmed",
         source_hash="abc",
         source_type="markdown",
     )
-    text = "I synced with Viktor yesterday"
+    text = "I synced with Stefan yesterday"
     md = to_markdown(text, [r])
-    assert "[Viktor](@person:viktor-bezdek?)" in md
+    assert "[Stefan](@person:stefan-weber?)" in md
 
     original, sidecar = to_sidecar(text, [r])
     assert original == text
-    assert sidecar["resolutions"][0]["entity_id"] == "viktor-bezdek"
+    assert sidecar["resolutions"][0]["entity_id"] == "stefan-weber"
 
 
 # ── Source hash stability ─────────────────────────────────────────────────────

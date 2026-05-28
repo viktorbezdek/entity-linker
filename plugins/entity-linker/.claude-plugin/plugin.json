@@ -4,9 +4,9 @@
   "description": "Resolves entity mentions in text inputs (transcripts, emails, docs) against a local catalog. Interactive disambiguation via MCP Apps with elicitation fallback. Czech + English, phonetic + fuzzy + inflection-aware matching.",
   "author": {
     "name": "Viktor Bezdek",
-    "email": "viktor.bezdek@groupon.com"
+    "email": "viktorbezdek@users.noreply.github.com"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "homepage": "https://github.com/viktorbezdek/entity-linker",
-  "keywords": ["text", "ner", "entity-linking", "transcripts", "email", "groupon", "b2c"]
+  "keywords": ["text", "ner", "entity-linking", "transcripts", "email", "czech", "phonetic"]
 }

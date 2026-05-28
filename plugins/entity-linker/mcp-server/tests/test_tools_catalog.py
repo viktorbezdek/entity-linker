@@ -31,9 +31,9 @@ async def test_catalog_stats_after_seed(seeded_conn) -> None:
 
 @pytest.mark.asyncio
 async def test_catalog_search_finds_entity(seeded_conn) -> None:
-    results = await catalog_search(query="Viktor")
+    results = await catalog_search(query="Stefan")
     ids = [r["id"] for r in results]
-    assert "viktor-bezdek" in ids
+    assert "stefan-weber" in ids
 
 
 @pytest.mark.asyncio

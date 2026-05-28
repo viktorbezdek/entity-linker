@@ -30,7 +30,7 @@ def test_should_use_elicitation_non_context_object() -> None:
 async def test_disambiguate_span_non_context_returns_none() -> None:
     from entity_db.elicit import disambiguate_span
 
-    result = await disambiguate_span(None, "Viktor", [])
+    result = await disambiguate_span(None, "Stefan", [])
     assert result is None
 
 
@@ -50,14 +50,14 @@ async def test_disambiguate_span_accept() -> None:
     mock_ctx = MagicMock()
     mock_result = MagicMock()
     mock_result.action = "accept"
-    mock_result.data = MagicMock(choice="viktor-bezdek")
+    mock_result.data = MagicMock(choice="stefan-weber")
     mock_ctx.elicit = AsyncMock(return_value=mock_result)
 
     import fastmcp
     mock_ctx.__class__ = fastmcp.Context  # make isinstance pass
 
-    result = await disambiguate_span(mock_ctx, "Viktor", [{"entity_id": "viktor-bezdek"}])
-    assert result == "viktor-bezdek"
+    result = await disambiguate_span(mock_ctx, "Stefan", [{"entity_id": "stefan-weber"}])
+    assert result == "stefan-weber"
 
 
 @pytest.mark.asyncio
@@ -72,7 +72,7 @@ async def test_disambiguate_span_cancel_returns_none() -> None:
     mock_ctx.elicit = AsyncMock(return_value=mock_result)
     mock_ctx.__class__ = fastmcp.Context
 
-    result = await disambiguate_span(mock_ctx, "Viktor", [])
+    result = await disambiguate_span(mock_ctx, "Stefan", [])
     assert result is None
 
 

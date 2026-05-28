@@ -1,13 +1,13 @@
-# B2C Tribe Standup — 2026-04-22
+# Core Team Standup — 2026-04-22
 
 ## What I did yesterday
 
-[Viktor](@person:viktor-bezdek?) finished the architecture review for the [Foundry AI](@project:foundry-ai?) integration. The [B2C](@team:b2c-tribe?) team agreed on the approach.
+[Stefan](@person:stefan-weber?) finished the architecture review for the [Quantum AI](@project:quantum-ai?) integration. The [Core](@team:core-team?) team agreed on the approach.
 
 ## What I'm doing today
 
-Syncing with [Tomas](@person:tomas-novak?) about the sprint priorities. [Viktor](@person:viktor-bezdek?) will also join to clarify the [FoundryAI](@project:foundry-ai?) timeline.
+Syncing with [Pavel](@person:pavel-kolar?) about the sprint priorities. [Stefan](@person:stefan-weber?) will also join to clarify the [QuantumAI](@project:quantum-ai?) timeline.
 
 ## Blockers
 
-None at [Groupon](@company:groupon?) level. The [B2C tribe](@team:b2c-tribe?) has everything it needs.
+None at [Horizon](@company:horizon?) level. The [Core team](@team:core-team?) has everything it needs.

@@ -4,12 +4,12 @@ from entity_db.matching.type_fit import score_type_fit
 
 def test_person_cue_returns_high_score() -> None:
     # "with" is a PERSON cue; entity type is person
-    tokens = ["synced", "with", "Viktor", "yesterday"]
+    tokens = ["synced", "with", "Stefan", "yesterday"]
     assert score_type_fit(tokens, "person") == 1.0
 
 
 def test_project_cue_returns_high_score() -> None:
-    tokens = ["the", "FoundryAI", "project", "rollout"]
+    tokens = ["the", "QuantumAI", "project", "rollout"]
     assert score_type_fit(tokens, "project") == 1.0
 
 
@@ -30,7 +30,7 @@ def test_product_cue_returns_high_score() -> None:
 
 def test_conflicting_cue_returns_low_score() -> None:
     # Person cues in context, but entity type is project → conflict → 0.0
-    tokens = ["synced", "with", "FoundryAI", "yesterday"]
+    tokens = ["synced", "with", "QuantumAI", "yesterday"]
     assert score_type_fit(tokens, "project") == 0.0
 
 
@@ -43,7 +43,7 @@ def test_no_cues_returns_neutral() -> None:
 
 def test_person_cue_within_short_context_returns_high() -> None:
     # score_type_fit receives pre-sliced ±3 tokens; "met" is a person cue
-    tokens_within = ["he", "met", "Viktor", "yesterday"]
+    tokens_within = ["he", "met", "Stefan", "yesterday"]
     assert score_type_fit(tokens_within, "person") == 1.0
 
 

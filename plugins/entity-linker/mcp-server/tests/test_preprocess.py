@@ -33,16 +33,16 @@ def test_detect_plain_fallback() -> None:
 
 
 def test_clean_email_strips_headers() -> None:
-    text = "From: alice@example.com\nTo: bob@example.com\nSubject: Test\n\nHello Viktor"
+    text = "From: alice@example.com\nTo: bob@example.com\nSubject: Test\n\nHello Stefan"
     result = clean(text, "email")
     assert "From:" not in result
-    assert "Viktor" in result
+    assert "Stefan" in result
 
 
 def test_clean_email_strips_signature() -> None:
-    text = "Let's meet\n\n-- \nViktor Bezdek\nGroupon"
+    text = "Let's meet\n\n-- \nStefan Weber\nGroupon"
     result = clean(text, "email")
-    assert "Viktor Bezdek" not in result
+    assert "Stefan Weber" not in result
     assert "Let's meet" in result
 
 
@@ -68,10 +68,10 @@ def test_clean_markdown_strips_headings() -> None:
 
 
 def test_clean_html_extracts_text() -> None:
-    text = "<html><body><p>Hello <b>Viktor</b></p></body></html>"
+    text = "<html><body><p>Hello <b>Stefan</b></p></body></html>"
     result = clean(text, "html")
     assert "<" not in result
-    assert "Viktor" in result
+    assert "Stefan" in result
 
 
 def test_clean_plain_passthrough() -> None:

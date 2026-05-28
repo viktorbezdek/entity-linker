@@ -33,11 +33,11 @@ Seed YAML format (flat list, `docs/examples/entities.seed.yml`):
 ```yaml
 version: 1
 entities:
-  - id: viktor-bezdek
+  - id: stefan-weber
     type: person
-    canonical_name: Viktor Bezdek
-    disambiguation_hint: "Groupon AI lead"
-    aliases: [Viktor, VB]
+    canonical_name: Stefan Weber
+    disambiguation_hint: "AI lead"
+    aliases: [Stefan, SW]
 ```
 
 ### Review staged candidates

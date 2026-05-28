@@ -61,7 +61,7 @@ def test_normalize_empty_string() -> None:
 
 def test_normalize_whitespace_preserved() -> None:
     # Spaces are kept; suffix stripping operates on the whole string end
-    result = normalize_text("Viktor Bezdek")
+    result = normalize_text("Stefan Weber")
     assert " " in result
 
 
@@ -69,18 +69,18 @@ def test_normalize_whitespace_preserved() -> None:
 
 
 def test_derive_variants_contains_first_name() -> None:
-    variants = derive_alias_variants("Viktor Bezdek")
-    assert "viktor" in variants
+    variants = derive_alias_variants("Stefan Weber")
+    assert "stefan" in variants
 
 
 def test_derive_variants_contains_last_name() -> None:
-    variants = derive_alias_variants("Viktor Bezdek")
-    assert "bezdek" in variants
+    variants = derive_alias_variants("Stefan Weber")
+    assert "weber" in variants
 
 
 def test_derive_variants_contains_initials() -> None:
-    variants = derive_alias_variants("Viktor Bezdek")
-    assert "vb" in variants
+    variants = derive_alias_variants("Stefan Weber")
+    assert "sw" in variants
 
 
 def test_derive_variants_single_word() -> None:
@@ -89,12 +89,12 @@ def test_derive_variants_single_word() -> None:
 
 
 def test_derive_variants_strips_diacritics() -> None:
-    # "Tomáš Novák" → must include diacritic-free forms
-    variants = derive_alias_variants("Tomáš Novák")
-    assert "tomas" in variants
-    assert "novak" in variants
+    # "Pavel Kolář" → must include diacritic-free forms
+    variants = derive_alias_variants("Pavel Kolář")
+    assert "pavel" in variants
+    assert "kolar" in variants
 
 
 def test_derive_variants_no_duplicates() -> None:
-    variants = derive_alias_variants("Viktor Bezdek")
+    variants = derive_alias_variants("Stefan Weber")
     assert len(variants) == len(set(variants))

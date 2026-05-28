@@ -19,7 +19,7 @@ async def conn(tmp_db_path: Path):
     await asyncio.to_thread(c.close)
 
 
-async def _seed_pending(conn, surface: str = "Viktor") -> str:
+async def _seed_pending(conn, surface: str = "Stefan") -> str:
     """Insert a pending_disambiguation row and return its id."""
     pid = str(uuid.uuid4())
     await asyncio.to_thread(
@@ -39,10 +39,10 @@ async def _seed_pending(conn, surface: str = "Viktor") -> str:
 
 @pytest.mark.asyncio
 async def test_pending_list_returns_rows(conn) -> None:
-    await _seed_pending(conn, "Viktor")
+    await _seed_pending(conn, "Stefan")
     items = await pending_list()
     assert len(items) >= 1
-    assert items[0]["surface"] == "Viktor"
+    assert items[0]["surface"] == "Stefan"
 
 
 @pytest.mark.asyncio
@@ -51,12 +51,12 @@ async def test_pending_resolve_with_entity_updates_row(conn) -> None:
         lambda: (
             conn.execute(
                 "INSERT INTO entities (id, type, canonical_name, created_at, updated_at)"
-                " VALUES ('vb', 'person', 'Viktor Bezdek', 0, 0)"
+                " VALUES ('vb', 'person', 'Stefan Weber', 0, 0)"
             ),
             conn.commit(),
         )
     )
-    pid = await _seed_pending(conn, "Viktor")
+    pid = await _seed_pending(conn, "Stefan")
     result = await pending_resolve(pid, "vb")
     assert result["ok"] is True
     assert result.get("entity_id") == "vb"
@@ -106,12 +106,12 @@ async def test_pending_resolve_backfills_resolution_log(conn) -> None:
         lambda: (
             conn.execute(
                 "INSERT INTO entities (id, type, canonical_name, created_at, updated_at)"
-                " VALUES ('vb2', 'person', 'Viktor Bezdek', 0, 0)"
+                " VALUES ('vb2', 'person', 'Stefan Weber', 0, 0)"
             ),
             conn.commit(),
         )
     )
-    pid = await _seed_pending(conn, "Viktor")
+    pid = await _seed_pending(conn, "Stefan")
     await pending_resolve(pid, "vb2")
 
     log = await asyncio.to_thread(

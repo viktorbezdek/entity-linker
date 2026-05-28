@@ -46,10 +46,10 @@ async def test_source_hash_stable(tmp_db_path: Path) -> None:
 @pytest.mark.asyncio
 async def test_ambiguous_span_queued_non_interactive(tmp_db_path: Path) -> None:
     conn = await open_db(tmp_db_path)
-    # Seed viktor-bezdek; neutral context → score ~0.75 (no type cues)
-    await _seed(conn, "vb", "person", "Viktor Bezdek", "Viktor")
+    # Seed stefan-weber; neutral context → score ~0.75 (no type cues)
+    await _seed(conn, "vb", "person", "Stefan Weber", "Stefan")
 
-    text = "Viktor was present"
+    text = "Stefan was present"
     opts = ResolveOptions(interactive=False)
     result = await resolve_link_text(text, "markdown", opts, conn)
 
@@ -90,13 +90,13 @@ async def test_unknown_repeated_surface_staged(tmp_db_path: Path) -> None:
 async def test_auto_linked_span_written_to_resolution_log(tmp_db_path: Path) -> None:
     conn = await open_db(tmp_db_path)
     # Seed entity; pre-seed resolution_log to give it recency=1 so score ≥ 0.90
-    await _seed(conn, "vb2", "person", "Viktor Bezdek", "Viktor")
+    await _seed(conn, "vb2", "person", "Stefan Weber", "Stefan")
 
     # Prime the linked_entities by pre-inserting a resolution_log row
     # for this source text to simulate recency (within-source prior mention)
     import hashlib
 
-    text = "synced with Viktor about FoundryAI"
+    text = "synced with Viktor about QuantumAI"
     source_hash = hashlib.sha256(text.encode()).hexdigest()[:16]
     await asyncio.to_thread(
         lambda: (
@@ -104,7 +104,7 @@ async def test_auto_linked_span_written_to_resolution_log(tmp_db_path: Path) -> 
                 "INSERT INTO resolution_log"
                 " (source_hash, source_type, span_start, span_end,"
                 "  surface, entity_id, confidence, method, created_at)"
-                " VALUES (?, 'markdown', 0, 6, 'Viktor', 'vb2', 0.91, 'auto', 0)",
+                " VALUES (?, 'markdown', 0, 6, 'Stefan', 'vb2', 0.91, 'auto', 0)",
                 (source_hash,),
             ),
             conn.commit(),
@@ -131,18 +131,18 @@ async def test_auto_linked_span_written_to_resolution_log(tmp_db_path: Path) -> 
 
 @pytest.mark.asyncio
 async def test_single_token_surface_does_not_auto_link(tmp_db_path: Path) -> None:
-    """A bare first name like 'Viktor' phonetically matches many people; even
+    """A bare first name like 'Stefan' phonetically matches many people; even
     when the top score clears _AUTO_SCORE and the gap clears _AUTO_GAP, we
     must route it to the ambiguity queue, not auto-link it silently."""
     conn = await open_db(tmp_db_path)
     # Seed one Viktor; no competitors in this test DB so score will be high.
-    await _seed(conn, "vb", "person", "Viktor Bezdek", "Viktor")
+    await _seed(conn, "vb", "person", "Stefan Weber", "Stefan")
 
     text = "synced with Viktor about the roadmap"
     opts = ResolveOptions(interactive=False)
     result = await resolve_link_text(text, "markdown", opts, conn)
 
-    # Zero auto-links — the single-token "Viktor" must be queued, not linked.
+    # Zero auto-links — the single-token "Stefan" must be queued, not linked.
     auto_linked = [r for r in result.resolutions if r.method == "auto"]
     assert auto_linked == [], (
         "Single-token surfaces must never auto-link — only full-name surfaces"
@@ -159,15 +159,15 @@ async def test_full_name_surface_can_auto_link(tmp_db_path: Path) -> None:
     """A two-token capitalized full name with a clear score+gap advantage
     should auto-link. This is the target happy path for the matcher."""
     conn = await open_db(tmp_db_path)
-    await _seed(conn, "vb", "person", "Viktor Bezdek", "Viktor Bezdek")
+    await _seed(conn, "vb", "person", "Stefan Weber", "Stefan Weber")
 
-    text = "synced with Viktor Bezdek about the roadmap"
+    text = "synced with Stefan Weber about the roadmap"
     opts = ResolveOptions(interactive=False)
     result = await resolve_link_text(text, "markdown", opts, conn)
 
     auto_linked = [r for r in result.resolutions if r.method == "auto"]
     assert any(
-        r.entity_id == "vb" and r.surface == "Viktor Bezdek" for r in auto_linked
+        r.entity_id == "vb" and r.surface == "Stefan Weber" for r in auto_linked
     ), f"Full-name surface should auto-link. resolutions={result.resolutions}"
     await asyncio.to_thread(conn.close)
 

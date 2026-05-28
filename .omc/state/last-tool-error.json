@@ -1,7 +1,7 @@
 {
-  "tool_name": "mcp__plugin_pilot_web-search__search",
-  "tool_input_preview": "{\"query\":\"Claude Code marketplace.json schema .claude-plugin plugins source field example\",\"limit\":\"5\"}",
-  "error": "MCP error -32602: Input validation error: Invalid arguments for tool search: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"number\",\n    \"received\": \"string\",\n    \"path\": [\n      \"limit\"\n    ],\n    \"message\": \"Expected number, received string\"\n  }\n]",
-  "timestamp": "2026-04-23T12:30:30.493Z",
-  "retry_count": 1
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"rtk grep -E \\\"idna|authlib|python-multipart\\\" plugins/entity-linker/mcp-server/pyproject.toml\",\"description\":\"Check Python dep versions in pyproject.toml\"}",
+  "error": "Exit code 1",
+  "timestamp": "2026-05-28T11:52:29.848Z",
+  "retry_count": 2
 }

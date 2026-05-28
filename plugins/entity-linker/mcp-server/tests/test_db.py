@@ -83,12 +83,12 @@ async def test_catalog_fts_queryable(tmp_db_path: Path) -> None:
     def _seed(c: sqlite3.Connection) -> None:
         _ = c.execute(
             "INSERT INTO entities (id, type, canonical_name, created_at, updated_at) "
-            "VALUES ('vb', 'person', 'Viktor Bezdek', 0, 0)"
+            "VALUES ('vb', 'person', 'Stefan Weber', 0, 0)"
         )
         fts_sql = (
             "INSERT INTO catalog_fts"
             " (entity_id, canonical_name, disambiguation_hint, aliases_concat)"
-            " VALUES ('vb', 'Viktor Bezdek', 'Groupon AI lead', 'Viktor vb')"
+            " VALUES ('vb', 'Stefan Weber', 'AI lead', 'Viktor vb')"
         )
         _ = c.execute(fts_sql)
         c.commit()
@@ -96,7 +96,7 @@ async def test_catalog_fts_queryable(tmp_db_path: Path) -> None:
     await asyncio.to_thread(_seed, conn)
     rows = await asyncio.to_thread(
         lambda: conn.execute(
-            "SELECT entity_id FROM catalog_fts WHERE catalog_fts MATCH 'Viktor'"
+            "SELECT entity_id FROM catalog_fts WHERE catalog_fts MATCH 'Stefan'"
         ).fetchall()
     )
     assert len(rows) == 1
@@ -112,11 +112,11 @@ async def test_rebuild_fts_for_updates_row(tmp_db_path: Path) -> None:
         lambda: (
             conn.execute(
                 "INSERT INTO entities (id, type, canonical_name, created_at, updated_at) "
-                "VALUES ('vb2', 'person', 'Viktor Bezdek', 0, 0)"
+                "VALUES ('vb2', 'person', 'Stefan Weber', 0, 0)"
             ),
             conn.execute(
                 "INSERT INTO aliases (entity_id, alias, alias_key, origin) "
-                "VALUES ('vb2', 'Viktor', 'viktor', 'canonical')"
+                "VALUES ('vb2', 'Stefan', 'stefan', 'canonical')"
             ),
             conn.commit(),
         )
@@ -124,7 +124,7 @@ async def test_rebuild_fts_for_updates_row(tmp_db_path: Path) -> None:
     await rebuild_fts_for(conn, "vb2")
     rows = await asyncio.to_thread(
         lambda: conn.execute(
-            "SELECT entity_id FROM catalog_fts WHERE catalog_fts MATCH 'viktor'"
+            "SELECT entity_id FROM catalog_fts WHERE catalog_fts MATCH 'stefan'"
         ).fetchall()
     )
     assert any(r[0] == "vb2" for r in rows)

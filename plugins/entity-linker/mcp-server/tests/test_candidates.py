@@ -29,14 +29,14 @@ async def _seed_entity(conn, eid: str, etype: str, cname: str, alias: str) -> No
 @pytest.mark.asyncio
 async def test_generate_candidates_finds_exact_match(tmp_db_path: Path) -> None:
     conn = await open_db(tmp_db_path)
-    await _seed_entity(conn, "viktor-bezdek", "person", "Viktor Bezdek", "Viktor")
+    await _seed_entity(conn, "stefan-weber", "person", "Stefan Weber", "Stefan")
 
-    text = "So I synced with Viktor yesterday about FoundryAI rollout"
+    text = "So I synced with Stefan yesterday about QuantumAI rollout"
     candidates = await generate_candidates(text, conn)
 
     entity_ids = {c.entity_id for c in candidates}
-    assert "viktor-bezdek" in entity_ids, (
-        f"Expected viktor-bezdek in candidates; found {entity_ids}"
+    assert "stefan-weber" in entity_ids, (
+        f"Expected stefan-weber in candidates; found {entity_ids}"
     )
     await asyncio.to_thread(conn.close)
 
@@ -44,17 +44,17 @@ async def test_generate_candidates_finds_exact_match(tmp_db_path: Path) -> None:
 @pytest.mark.asyncio
 async def test_generate_candidates_span_offsets_correct(tmp_db_path: Path) -> None:
     conn = await open_db(tmp_db_path)
-    await _seed_entity(conn, "vb", "person", "Viktor Bezdek", "Viktor")
+    await _seed_entity(conn, "vb", "person", "Stefan Weber", "Stefan")
 
-    text = "Hello Viktor world"
+    text = "Hello Stefan world"
     candidates = await generate_candidates(text, conn)
 
     vb_spans = [c for c in candidates if c.entity_id == "vb"]
     assert vb_spans, "Expected at least one span for 'vb'"
     span = vb_spans[0]
-    # "Viktor" starts at char 6 in "Hello Viktor world"
+    # "Stefan" starts at char 6 in "Hello Stefan world"
     assert span.span_start == 6
-    assert text[span.span_start : span.span_end] == "Viktor"
+    assert text[span.span_start : span.span_end] == "Stefan"
     await asyncio.to_thread(conn.close)
 
 
@@ -73,12 +73,12 @@ async def test_generate_candidates_stopwords_excluded(tmp_db_path: Path) -> None
 @pytest.mark.asyncio
 async def test_generate_candidates_two_token_window(tmp_db_path: Path) -> None:
     conn = await open_db(tmp_db_path)
-    await _seed_entity(conn, "foundry-ai", "project", "Foundry AI", "Foundry AI")
+    await _seed_entity(conn, "quantum-ai", "project", "Quantum AI", "Quantum AI")
 
-    text = "working on Foundry AI rollout"
+    text = "working on Quantum AI rollout"
     candidates = await generate_candidates(text, conn)
     entity_ids = {c.entity_id for c in candidates}
-    assert "foundry-ai" in entity_ids
+    assert "quantum-ai" in entity_ids
     await asyncio.to_thread(conn.close)
 
 

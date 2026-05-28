@@ -1,13 +1,13 @@
-[00:00:00] Viktor: Good morning everyone. Let's get started with the standup.
+[00:00:00] Stefan: Good morning everyone. Let's get started with the standup.
 
-[00:00:15] Tomas: Thanks Viktor. So I finished the sprint planning document and shared it with the B2C team.
+[00:00:15] Pavel: Thanks Stefan. So I finished the sprint planning document and shared it with the Core team.
 
-[00:00:30] Viktor: Great. And the Foundry AI integration — what's the status?
+[00:00:30] Stefan: Great. And the Quantum AI integration — what's the status?
 
-[00:00:45] Adam: We're on track. Groupon's platform team confirmed the timeline.
+[00:00:45] Petr: We're on track. Horizon's platform team confirmed the timeline.
 
-[00:01:00] Viktor: Perfect. B2C tribe meeting on Thursday then. Any blockers?
+[00:01:00] Stefan: Perfect. Core team meeting on Thursday then. Any blockers?
 
-[00:01:10] Tomas: None from my side. The FoundryAI API is stable.
+[00:01:10] Pavel: None from my side. The QuantumAI API is stable.
 
-[00:01:20] Viktor: All good. Talk soon everyone.
+[00:01:20] Stefan: All good. Talk soon everyone.

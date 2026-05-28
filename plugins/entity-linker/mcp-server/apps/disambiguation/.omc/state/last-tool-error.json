@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd /Users/vbezdek/Work/entitiy-memory-plugin && SLUG=$(basename \\\"$(git remote get-url origin 2>/dev/null | sed 's/\\\\.git$//')\\\" 2>/dev/null || basename \\\"$PWD\\\")\\necho \\\"SLUG=$SLUG\\\"\\nech...",
-  "error": "Exit code 1\nSLUG=\n---existing rules---\n---legacy CLAUDE.md---\n---check .claude dir---",
-  "timestamp": "2026-04-23T12:20:45.692Z",
+  "tool_input_preview": "{\"command\":\"npm audit 2>&1 && echo \\\"---STAGING---\\\" && cd /Users/vbezdek/Work/entitiy-memory-plugin/plugins/entity-linker/mcp-server/apps/staging && npm audit 2>&1\",\"description\":\"Full audit output f...",
+  "error": "Exit code 1\n# npm audit report\n\nws  8.0.0 - 8.20.0\nSeverity: moderate\nws: Uninitialized memory disclosure - https://github.com/advisories/GHSA-58qx-3vcg-4xpx\nfix available via `npm audit fix`\nnode_modules/ws\n\n1 moderate severity vulnerability\n\nTo address all issues, run:\n  npm audit fix",
+  "timestamp": "2026-05-28T11:54:33.831Z",
   "retry_count": 1
 }

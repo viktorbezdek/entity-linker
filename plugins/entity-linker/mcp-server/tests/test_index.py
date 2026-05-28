@@ -85,7 +85,7 @@ async def test_upsert_alias_populates_phonetic_index(tmp_db_path: Path) -> None:
         lambda: (
             conn.execute(
                 "INSERT INTO entities (id, type, canonical_name, created_at, updated_at) "
-                "VALUES ('vb', 'person', 'Viktor Bezdek', 0, 0)"
+                "VALUES ('vb', 'person', 'Stefan Weber', 0, 0)"
             ),
             conn.commit(),
         )
@@ -108,7 +108,7 @@ async def test_upsert_alias_populates_trigrams(tmp_db_path: Path) -> None:
         lambda: (
             conn.execute(
                 "INSERT INTO entities (id, type, canonical_name, created_at, updated_at) "
-                "VALUES ('vb2', 'person', 'Viktor Bezdek', 0, 0)"
+                "VALUES ('vb2', 'person', 'Stefan Weber', 0, 0)"
             ),
             conn.commit(),
         )
@@ -131,7 +131,7 @@ async def test_delete_alias_removes_phonetic_and_trigram_rows(tmp_db_path: Path)
         lambda: (
             conn.execute(
                 "INSERT INTO entities (id, type, canonical_name, created_at, updated_at) "
-                "VALUES ('vb3', 'person', 'Viktor Bezdek', 0, 0)"
+                "VALUES ('vb3', 'person', 'Stefan Weber', 0, 0)"
             ),
             conn.commit(),
         )

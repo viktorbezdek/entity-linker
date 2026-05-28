@@ -67,10 +67,10 @@ async def test_import_seed_populates_fts(tmp_db_path: Path) -> None:
 
     rows = await asyncio.to_thread(
         lambda: conn.execute(
-            "SELECT entity_id FROM catalog_fts WHERE catalog_fts MATCH 'Viktor'"
+            "SELECT entity_id FROM catalog_fts WHERE catalog_fts MATCH 'Stefan'"
         ).fetchall()
     )
-    assert any(r[0] == "viktor-bezdek" for r in rows)
+    assert any(r[0] == "stefan-weber" for r in rows)
     await asyncio.to_thread(conn.close)
 
 

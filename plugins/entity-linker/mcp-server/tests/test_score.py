@@ -4,8 +4,8 @@ from entity_db.matching.score import ScoreContext, score_candidate
 
 def _person_context(local_recency: bool = False) -> ScoreContext:
     return ScoreContext(
-        context_tokens=["synced", "with", "Viktor", "yesterday"],
-        linked_entities={"viktor-bezdek"} if local_recency else set(),
+        context_tokens=["synced", "with", "Stefan", "yesterday"],
+        linked_entities={"stefan-weber"} if local_recency else set(),
         window_candidates=[],
     )
 
@@ -25,9 +25,9 @@ def test_score_person_entity_with_cues_and_recency_meets_threshold() -> None:
     # Person cues + already linked (recency=1) → 0.45+0.20+0.20+0.10 = 0.95 ≥ 0.90
     ctx = _person_context(local_recency=True)
     s = score_candidate(
-        window="Viktor",
-        alias_key="viktor",
-        entity_id="viktor-bezdek",
+        window="Stefan",
+        alias_key="stefan",
+        entity_id="stefan-weber",
         entity_type="person",
         ctx=ctx,
     )
@@ -39,7 +39,7 @@ def test_score_project_entity_with_person_cues_below_threshold() -> None:
     # 0.45+0.20+0 = 0.65 ≤ 0.65
     ctx = _person_context(local_recency=False)
     s = score_candidate(
-        window="Viktor",
+        window="Stefan",
         alias_key="viktor",
         entity_id="viktor-project",
         entity_type="project",
