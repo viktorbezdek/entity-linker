@@ -13,6 +13,10 @@ dependencies = [
     "abydos>=0.5.0,<0.6",
     "rapidfuzz>=3.6,<4",
     "pyyaml>=6.0,<7",
+    # security floor pins — CVE fixes in transitive deps
+    "authlib>=1.7.1",
+    "idna>=3.15",
+    "python-multipart>=0.0.27",
 ]
 
 [project.scripts]
